@@ -23,6 +23,7 @@ puts "DB Instance Status: " + db_instance_status.to_s
 master_username = resp.db_instances[0].master_username #=> String
 puts "Master Username: " + master_username
 db_name = resp.db_instances[0].db_name #=> String
+db_name = "No Name" if db_name.nil? || db_name.empty? 
 puts "DB Name: " + db_name.to_s 
 endpointaddress = resp.db_instances[0].endpoint.address #=> String
 puts "End Point Address: " + endpointaddress
@@ -81,6 +82,7 @@ subnets = resp.db_instances[0].db_subnet_group.subnets #=> Array
 	end 
 
 db_subnet_group_arn = resp.db_instances[0].db_subnet_group.db_subnet_group_arn #=> String
+db_subnet_group_arn = "No DB Subnet Group ARN" if db_subnet_group_arn.nil? || db_subnet_group_arn.empty?
 puts "DB Subnet Group ARN: " + db_subnet_group_arn.to_s
 preferred_maintenance_window = resp.db_instances[0].preferred_maintenance_window #=> String
 puts "Preferred Maintanence Window: " + preferred_maintenance_window
@@ -93,7 +95,9 @@ puts "Engine Version: " + engine_version
 auto_minor_version_upgrade = resp.db_instances[0].auto_minor_version_upgrade #=> Boolean
 puts "Auto Minor Version Upgrade: " + auto_minor_version_upgrade.to_s
 read_replica_source_db_instance_identifier = resp.db_instances[0].read_replica_source_db_instance_identifier #=> String
+read_replica_source_db_instance_identifier = "Does not exist" if read_replica_source_db_instance_identifier.nil? || read_replica_source_db_instance_identifier.empty?
 puts "Read Replica Source DB Instance Identifier: " + read_replica_source_db_instance_identifier.to_s 
+
 read_replica_db_instance_identifiers = resp.db_instances[0].read_replica_db_instance_identifiers #=> Array
 	read_replica_db_instance_identifiers.each do |i|
 		puts "Read Replica DB Instance Identifiers: " + i.read_replica_db_instance_identifiers
@@ -105,6 +109,7 @@ read_replica_db_cluster_identifiers = resp.db_instances[0].read_replica_db_clust
 license_model = resp.db_instances[0].license_model #=> String
 puts "License Model: " + license_model
 iops = resp.db_instances[0].iops #=> Integer
+iops = "False" if iops.nil? || iops.empty?
 puts "IOPS: " + iops.to_s
 option_group_memberships = resp.db_instances[0].option_group_memberships #=> Array
 	option_group_memberships.each do |i|
@@ -115,6 +120,7 @@ option_group_memberships = resp.db_instances[0].option_group_memberships #=> Arr
 character_set_name = resp.db_instances[0].character_set_name #=> String
 puts "Character Set Name: " + character_set_name
 secondary_availability_zone = resp.db_instances[0].secondary_availability_zone #=> String
+secondary_availability_zone = "Does not exist" if secondary_availability_zone.nil? || secondary_availability_zone.empty?
 puts "Secondary Availability Zone: " + secondary_availability_zone.to_s 
 publicly_accessible = resp.db_instances[0].publicly_accessible #=> Boolean
 puts "Publicly Accessible: " + publicly_accessible.to_s
@@ -129,10 +135,12 @@ status_infos = resp.db_instances[0].status_infos #=> Array
 storage_type = resp.db_instances[0].storage_type #=> String
 puts "Storage Type: " + storage_type
 tde_credential_arn = resp.db_instances[0].tde_credential_arn #=> String
+tde_credential_arn = "Does not exist" if tde_credential_arn.nil? || tde_credential_arn.empty?
 puts "TDE Credential ARN: " + tde_credential_arn.to_s
 db_instance_port = resp.db_instances[0].db_instance_port #=> Integer
 puts "DB Instance Port: " + db_instance_port.to_s
 db_cluster_identifier = resp.db_instances[0].db_cluster_identifier #=> String
+db_cluster_identifier = "Does not exist" if db_cluster_identifier.nil? || db_cluster_identifier.empty? 
 puts "DB Cluster Identifier: " + db_cluster_identifier.to_s
 storage_encrypted = resp.db_instances[0].storage_encrypted #=> Boolean
 puts "Storage Encrypted: " + storage_encrypted.to_s
@@ -157,50 +165,40 @@ puts "Copy Tags to Snapshot: " + copy_tags_to_snapshot.to_s
 monitoring_interval = resp.db_instances[0].monitoring_interval #=> Integer
 puts "Monitoring Interval: " + monitoring_interval.to_s
 enhanced_monitoring_resource_arn = resp.db_instances[0].enhanced_monitoring_resource_arn #=> String
+enhanced_monitoring_resource_arn = "Does not exist" if enhanced_monitoring_resource_arn.nil? || enhanced_monitoring_resource_arn.empty?
 puts "Enhanced Monitoring Resource ARN: " + enhanced_monitoring_resource_arn.to_s
 monitoring_role_arn = resp.db_instances[0].monitoring_role_arn #=> String
+monitoring_role_arn = "Does not Exist" if monitoring_role_arn.nil? || monitoring_role_arn.empty? 
 puts "Monitoring Role ARN: " + monitoring_role_arn.to_s
 promotion_tier = resp.db_instances[0].promotion_tier #=> Integer
+promotion_tier = "Does not exist" if promotion_tier.nil? || promotion_tier.empty?
 puts "Promotion Tier: " + promotion_tier.to_s
 db_instance_arn = resp.db_instances[0].db_instance_arn #=> String
 puts "DB Instance ARN: " + db_instance_arn
 timezone = resp.db_instances[0].timezone #=> String
+timezone = "Does not exist" if timezone.nil? || timezone.empty? 
 puts "Timezone: " + timezone.to_s
 iam_database_authentication_enabled = resp.db_instances[0].iam_database_authentication_enabled #=> Boolean
 puts "IAM Database Authentication Enabled: " + iam_database_authentication_enabled.to_s
 performance_insights_enabled = resp.db_instances[0].performance_insights_enabled #=> Boolean
 puts "Performance Insights Enabled: " + performance_insights_enabled.to_s
-performance_insights_kms_key_id = resp.db_instances[0].performance_insights_kms_key_id #=> String
-puts "Performance Insights KMS Key ID: " + performance_insights_kms_key_id.to_s
-performance_insights_retention_period = resp.db_instances[0].performance_insights_retention_period #=> Integer
-puts "Perfomance Insights Retention Period: " + performance_insights_retention_period.to_s
+	if performance_insights_enabled == true
+		performance_insights_kms_key_id = resp.db_instances[0].performance_insights_kms_key_id #=> String
+		puts "Performance Insights KMS Key ID: " + performance_insights_kms_key_id.to_s
+		performance_insights_retention_period = resp.db_instances[0].performance_insights_retention_period #=> Integer
+		puts "Perfomance Insights Retention Period: " + performance_insights_retention_period.to_s
+	end
 
 enabled_cloudwatch_logs_exports = resp.db_instances[0].enabled_cloudwatch_logs_exports #=> Array
 	enabled_cloudwatch_logs_exports.each do |i|
+		i = "False" if i.nil? || i.empty? 
 		puts "Enabled Cloudwatch Logs Export: " + i.to_s
 	end
 
-# Note: No Return
-processor_features = resp.db_instances[0].processor_features #=> Array
-	processor_features.each do |i| 
-		puts "Processor Features - Name: " + i.name
-		puts "Processor Features - Value: " + i.value
-	end
 
 deletion_protection = resp.db_instances[0].deletion_protection #=> Boolean
 puts "Deletion Protection: " + deletion_protection.to_s
 
-# Note: No Return
-associated_roles = resp.db_instances[0].associated_roles #=> Array
-	associated_roles.each do |i| 
-		puts i.role_arn
-		puts i.feature_name
-		puts i.status
-		puts i.listener_endpoint.address
-		puts i.listener_endpoint.port
-		puts i.listener_endpoint.hosted_zone_id
-		puts i.max_allocated_storage
-	end
 
 
 # % resp = client.describe_db_instances({
