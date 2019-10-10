@@ -19,6 +19,7 @@ puts "\nAvailable instances:"
 
 describe_instances_result = ec2.describe_instances({ instance_ids: instance_id_list })
 
+
 describe_instances_result.reservations.each do |reservation|
   if reservation.instances.count > 0
     reservation.instances.each do |instance|
